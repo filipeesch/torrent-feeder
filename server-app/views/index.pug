@@ -9,6 +9,7 @@ html
       table {
         border-spacing: 0;
       }
+    meta(name="viewport" content="width=device-width, initial-scale=0.8")
   body
     div
       form(method="GET" action="/")
@@ -23,7 +24,6 @@ html
         tr
           th="Id"
           th="Date"
-          th="Show"
           th="Episode"
           th="Downloaded"
           th=""
@@ -32,7 +32,6 @@ html
           tr
             td=episode.EpisodeID
             td=moment(episode.Date).format("YYYY-MM-DD")
-            td=episode.ShowName
             td=episode.EpisodeName
             td=episode.Downloaded
             td
