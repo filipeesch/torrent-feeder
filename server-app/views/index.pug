@@ -1,6 +1,14 @@
 html
   head
     title= "Torrent Feeder"
+    style(type='text/css').
+      td, th {
+          border: 1px solid gray;
+          padding: 3px;
+      }
+      table {
+        border-spacing: 0;
+      }
   body
     div
       form(method="GET" action="/")
@@ -11,18 +19,23 @@ html
             option(value=show.ShowID) #{show.ShowName}
 
     div
-      table(style="border=1")
+      table
         tr
           th="Id"
           th="Date"
           th="Show"
           th="Episode"
+          th="Downloaded"
+          th=""
           th=""
         each episode in episodes
           tr
             td=episode.EpisodeID
-            td=episode.Date
+            td=moment(episode.Date).format("YYYY-MM-DD")
             td=episode.ShowName
             td=episode.EpisodeName
+            td=episode.Downloaded
             td
-              a(href="\download=" + episode.EpisodeID)="Download"
+              a(href="/download?downloaded=0&episodeId=" + episode.EpisodeID)="Download Again"
+            td
+              a(href="/download?downloaded=1&episodeId=" + episode.EpisodeID)="Mark as Downloaded"
