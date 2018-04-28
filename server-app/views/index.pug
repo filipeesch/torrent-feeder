@@ -1,0 +1,28 @@
+html
+  head
+    title= "Torrent Feeder"
+  body
+    div
+      form(method="GET" action="/")
+        label="Shows:"
+        select(name="showId" onchange="document.forms[0].submit()")
+          option
+          each show in shows
+            option(value=show.ShowID) #{show.ShowName}
+
+    div
+      table(style="border=1")
+        tr
+          th="Id"
+          th="Date"
+          th="Show"
+          th="Episode"
+          th=""
+        each episode in episodes
+          tr
+            td=episode.EpisodeID
+            td=episode.Date
+            td=episode.ShowName
+            td=episode.EpisodeName
+            td
+              a(href="\download=" + episode.EpisodeID)="Download"
