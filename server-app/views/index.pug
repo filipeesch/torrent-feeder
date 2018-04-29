@@ -1,7 +1,7 @@
 html
   head
     title= "Torrent Feeder"
-    style(type='text/css')
+    style(type='text/css').
       td, th {
           border: 1px solid gray;
           padding: 3px;
@@ -10,6 +10,12 @@ html
         border-spacing: 0;
       }
     meta(name="viewport" content="width=device-width, initial-scale=0.8")
+    script.
+      function action(episodeId, evt) {
+        var downloaded = evt.target.value == "again" ? 0 : 1;
+
+        document.location ="/download?episodeId=" + episodeId + "&downloaded=" + downloaded;
+      }
   body
     div
       form(method="GET" action="/")
@@ -17,7 +23,7 @@ html
         select(name="showId" onchange="document.forms[0].submit()")
           option
           each show in shows
-            option(value=show.ShowID) #{show.ShowName}
+            option(value=show.ShowID)=show.ShowName
 
     div
       table
@@ -26,8 +32,7 @@ html
           th="Date"
           th="Episode"
           th="Downloaded"
-          th=""
-          th=""
+          th="Action"
         each episode in episodes
           tr
             td=episode.EpisodeID
@@ -35,6 +40,7 @@ html
             td=episode.EpisodeName
             td=episode.Downloaded
             td
-              a(href="/download?downloaded=0&episodeId=" + episode.EpisodeID)="Download Again"
-            td
-              a(href="/download?downloaded=1&episodeId=" + episode.EpisodeID)="Mark as Downloaded"
+              select(onchange="action(" + episode.EpisodeID + ", event)")
+                option
+                option(value="again")="Download Again"
+                option(value="downloaded")="Mark as Downloaded"
