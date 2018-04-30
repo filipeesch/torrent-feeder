@@ -28,14 +28,12 @@ html
     div
       table
         tr
-          th="Id"
           th="Date"
           th="Episode"
-          th="Downloaded"
+          th="D"
           th="Action"
         each episode in episodes
           tr
-            td=episode.EpisodeID
             td=moment(episode.Date).format("YYYY-MM-DD")
             td=episode.EpisodeName
             td=episode.Downloaded
