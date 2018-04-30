@@ -6,8 +6,17 @@ html
           border: 1px solid gray;
           padding: 3px;
       }
+
       table {
         border-spacing: 0;
+      }
+
+      input[type="button"] {
+        margin: 5px;
+      }
+
+      form {
+        margin: 0;
       }
     meta(name="viewport" content="width=device-width, initial-scale=0.8")
     script.
@@ -19,26 +28,31 @@ html
   body
     div
       form(method="GET" action="/")
-        label="Shows:"
+        label="Shows: "
         select(name="showId" onchange="document.forms[0].submit()")
           option
           each show in shows
-            option(value=show.ShowID)=show.ShowName
+            if selectedShowId == show.ShowID
+              option(value=show.ShowID selected)=show.ShowName
+            else
+              option(value=show.ShowID)=show.ShowName
+
+    div
+      input(type="button" value="Mark as Downloaded")
+      input(type="button" value="Download Again")
 
     div
       table
         tr
+          th
+            input(type="checkbox" name="all-episodes")
           th="Date"
           th="Episode"
           th="D"
-          th="Action"
         each episode in episodes
           tr
+            td
+              input(type="checkbox" name="episode" data-id=episode.EpisodeID)
             td=moment(episode.Date).format("YYYY-MM-DD")
             td=episode.EpisodeName
             td=episode.Downloaded
-            td
-              select(onchange="action(" + episode.EpisodeID + ", event)")
-                option
-                option(value="again")="Download Again"
-                option(value="downloaded")="Mark as Downloaded"

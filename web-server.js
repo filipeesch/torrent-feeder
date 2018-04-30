@@ -16,13 +16,15 @@ app.locals.moment = moment;
 
 app.get('/', async (request, response) => {
 
+    var selectedShowId = request.query["showId"] || null;
+
     var shows = await db.allAsync("SELECT DISTINCT ShowID, ShowName FROM ShowRssItem ORDER BY ShowName");
 
     var episodes = await db.allAsync(
         "SELECT EpisodeID, EpisodeName, ShowName, Date, Downloaded FROM ShowRssItem WHERE $showID IS NULL OR ShowID = $showID ORDER BY EpisodeID DESC",
-        { $showID: request.query["showId"] });
+        { $showID: selectedShowId });
 
-    response.render("index", { shows: shows, episodes: episodes });
+    response.render("index", { shows: shows, episodes: episodes, selectedShowId: selectedShowId });
 });
 
 app.get('/download', async (request, response) => {
