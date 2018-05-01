@@ -1,0 +1,14 @@
+table
+  tr
+    th
+      input(type="checkbox" id="all-episodes")
+    th="Date"
+    th="Episode"
+    th="D"
+  each episode in episodes
+    tr
+      td
+        input(type="checkbox" name="episode" data-id=episode.EpisodeID)
+      td=moment(episode.Date).format("YYYY-MM-DD")
+      td=episode.EpisodeName
+      td=episode.Downloaded

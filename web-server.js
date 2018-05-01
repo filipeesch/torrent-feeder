@@ -12,19 +12,26 @@ const app = express();
 const port = 3000;
 
 app.set('view engine', 'pug');
+app.use("/scripts", express.static('scripts'));
+
 app.locals.moment = moment;
 
 app.get('/', async (request, response) => {
 
-    var selectedShowId = request.query["showId"] || null;
-
     var shows = await db.allAsync("SELECT DISTINCT ShowID, ShowName FROM ShowRssItem ORDER BY ShowName");
 
+    response.render("index", { shows: shows });
+});
+
+app.get('/episodes', async (request, response) => {
+
+    var selectedShowId = request.query["showId"] || null;
+
     var episodes = await db.allAsync(
-        "SELECT EpisodeID, EpisodeName, ShowName, Date, Downloaded FROM ShowRssItem WHERE $showID IS NULL OR ShowID = $showID ORDER BY EpisodeID DESC",
+        "SELECT EpisodeID, EpisodeName, Date, Downloaded FROM ShowRssItem WHERE $showID IS NULL OR ShowID = $showID ORDER BY EpisodeID DESC",
         { $showID: selectedShowId });
 
-    response.render("index", { shows: shows, episodes: episodes, selectedShowId: selectedShowId });
+    response.render("episodes", { episodes: episodes });
 });
 
 app.get('/download', async (request, response) => {
@@ -36,7 +43,7 @@ app.get('/download', async (request, response) => {
             $downloaded: request.query.downloaded,
         });
 
-    response.redirect(request.header("Referer"));
+    response.send("Done");
 });
 
 app.listen(port, (err) => {
